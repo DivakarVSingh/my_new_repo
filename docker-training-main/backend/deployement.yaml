@@ -1,0 +1,55 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "my-newapp"
+  namespace: "default"
+  labels:
+    app: "my-newapp"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "my-newapp"
+  template:
+    metadata:
+      labels:
+        app: "my-newapp"
+    spec:
+      containers:
+      - name: "backend-image"
+        image: "gcr.io/prj-diameterhealth-working/divakar/backend/backend-image@sha256:4159b383026a56fa2d5f5c43f28003ff5f4b7ae9c21c2ecdf9dcc96cd7ff63bf"
+---
+# apiVersion: "autoscaling/v2"
+# kind: "HorizontalPodAutoscaler"
+# metadata:
+#   name: "my-newapp-hpa-qlc1"
+#   namespace: "default"
+#   labels:
+#     app: "my-newapp"
+# spec:
+#   scaleTargetRef:
+#     kind: "Deployment"
+#     name: "my-newapp"
+#     apiVersion: "apps/v1"
+#   minReplicas: 1
+#   maxReplicas: 5
+#   metrics:
+#   - type: "Resource"
+#     resource:
+#       name: "cpu"
+#       target:
+#         type: "Utilization"
+#         averageUtilization: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-newapp-service
+spec:
+  selector:
+    run: back-end
+  ports:
+    - port: 80
+      targetPort: 5000
+  type: ClusterIP

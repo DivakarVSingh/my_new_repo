@@ -1,0 +1,13 @@
+---
+replicaCount: 3
+
+image:
+  repository: gcr.io/prj-diameterhealth-working/divakar/backend/backend-image@sha256:4159b383026a56fa2d5f5c43f28003ff5f4b7ae9c21c2ecdf9dcc96cd7ff63bf
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+
+app_port: 3000
+environment: production
